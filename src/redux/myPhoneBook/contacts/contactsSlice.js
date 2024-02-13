@@ -1,33 +1,50 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { nanoid } from 'nanoid';
+import {
+  fetchContacts,
+  addContact,
+  deleteContact,
+} from '../../../redux/myPhoneBook/contacts/contacs-operations';
+
+const initialState = {
+  items: [],
+  isLoading: false,
+  error: null,
+};
+
+const pending = state => {
+  state.isLoading = true;
+  state.error = null;
+};
+
+const rejected = (state, { payload }) => {
+  state.isLoading = false;
+  state.error = payload;
+};
 
 export const contactsSlice = createSlice({
   name: 'contacts',
-  initialState: [
-    { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
-    { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
-    { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
-    { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
-  ],
-  reducers: {
-    addContact: {
-      reducer: (state, { payload }) => {
-        state.push(payload);
-      },
-      prepare: data => {
-        return {
-          payload: {
-            id: nanoid(4),
-            ...data,
-          },
-        };
-      },
-    },
-    removeContact(state, { payload }) {
-      return state.filter(item => item.id !== payload);
-    },
+  initialState,
+  extraReducers: builder => {
+    builder
+      .addCase(fetchContacts.pending, pending)
+      .addCase(fetchContacts.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.items = payload;
+      })
+      .addCase(fetchContacts.rejected, rejected)
+      .addCase(addContact.pending, pending)
+      .addCase(addContact.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.items.push(payload);
+      })
+      .addCase(addContact.rejected, rejected)
+      .addCase(deleteContact.pending, pending)
+      .addCase(deleteContact.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.items = state.items.filter(({ id }) => id !== payload);
+      })
+      .addCase(deleteContact.rejected, rejected);
   },
 });
 
-export const { addContact, removeContact } = contactsSlice.actions;
 export default contactsSlice.reducer;
