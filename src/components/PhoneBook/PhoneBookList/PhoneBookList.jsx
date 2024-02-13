@@ -2,6 +2,7 @@ import css from './PhoneBookList.module.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { deleteContact } from '../../../redux/myPhoneBook/contacts/contacs-operations';
 import { selectFilteredContacts } from '../../../redux/myPhoneBook/contacts/contacts-selectors';
+import Loader from 'components/Loader/Loader';
 
 const PhoneBookList = () => {
   const { items, isLoading, error } = useSelector(selectFilteredContacts);
@@ -22,7 +23,7 @@ const PhoneBookList = () => {
   ));
   return (
     <div>
-      {isLoading && <p>...Loading</p>}
+      {isLoading && <Loader />}
       {error && <p>{error}</p>}
       {Boolean(items.length) && <ul className={css.list}>{elements}</ul>}
     </div>

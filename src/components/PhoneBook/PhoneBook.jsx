@@ -9,7 +9,7 @@ const PhoneBook = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     dispatch(fetchContacts());
-  }, []);
+  });
   return (
     <div>
       <PhoneBookForm />
