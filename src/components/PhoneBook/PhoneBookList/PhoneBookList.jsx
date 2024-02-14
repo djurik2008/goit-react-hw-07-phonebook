@@ -6,7 +6,6 @@ import Loader from 'components/Loader/Loader';
 
 const PhoneBookList = () => {
   const { items, isLoading, error } = useSelector(selectFilteredContacts);
-
   const dispatch = useDispatch();
 
   const elements = items.map(({ id, name, phone }) => (

@@ -32,7 +32,7 @@ export const addContact = createAsyncThunk(
         const normalizedCurrentName = item.name.toLowerCase();
         const currentPhone = item.phone;
         return (
-          normalizedCurrentName === normalizedName && currentPhone === phone
+          normalizedCurrentName === normalizedName || currentPhone === phone
         );
       });
 
