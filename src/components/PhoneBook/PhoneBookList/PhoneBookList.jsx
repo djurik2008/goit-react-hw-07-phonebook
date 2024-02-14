@@ -16,13 +16,13 @@ const PhoneBookList = () => {
         onClick={() => dispatch(deleteContact(id))}
         className={css.buttonDel}
       >
-        Delete
+        {isLoading === id ? <Loader /> : 'Delete'}
       </button>
     </li>
   ));
   return (
     <div>
-      {isLoading && <Loader />}
+      {isLoading === 'fetch' && <Loader />}
       {error && <p>{error}</p>}
       {Boolean(items.length) && <ul className={css.list}>{elements}</ul>}
     </div>

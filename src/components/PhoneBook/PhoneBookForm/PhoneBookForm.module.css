@@ -39,10 +39,10 @@ input:hover {
   border-radius: 5px;
   outline: none;
   color: white;
-  background-color: #3645ab;
+  background-color: #82ab36;
 }
 
 .button:hover,
 .button:focus {
-  background-color: #2b3788;
+  background-color: #77882b;
 }

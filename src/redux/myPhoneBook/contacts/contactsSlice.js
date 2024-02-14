@@ -11,10 +11,10 @@ const initialState = {
   error: null,
 };
 
-const pending = state => {
-  state.isLoading = true;
-  state.error = null;
-};
+// const pending = state => {
+//   state.isLoading = true;
+//   state.error = null;
+// };
 
 const rejected = (state, { payload }) => {
   state.isLoading = false;
@@ -26,19 +26,25 @@ export const contactsSlice = createSlice({
   initialState,
   extraReducers: builder => {
     builder
-      .addCase(fetchContacts.pending, pending)
+      .addCase(fetchContacts.pending, state => {
+        state.isLoading = 'fetch';
+      })
       .addCase(fetchContacts.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.items = payload;
       })
       .addCase(fetchContacts.rejected, rejected)
-      .addCase(addContact.pending, pending)
+      .addCase(addContact.pending, state => {
+        state.isLoading = 'add';
+      })
       .addCase(addContact.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.items.push(payload);
       })
       .addCase(addContact.rejected, rejected)
-      .addCase(deleteContact.pending, pending)
+      .addCase(deleteContact.pending, (state, { meta }) => {
+        state.isLoading = meta.arg;
+      })
       .addCase(deleteContact.fulfilled, (state, { payload }) => {
         state.isLoading = false;
         state.items = state.items.filter(({ id }) => id !== payload);
